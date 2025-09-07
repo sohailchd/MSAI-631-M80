@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App - MSAI 631</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        .content {
+            padding: 3rem 2rem;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            padding: 1.5rem;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+        }
+        .feature h3 {
+            margin: 0 0 1rem 0;
+            color: #667eea;
+        }
+        .feature p {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+        .status {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Flask App</h1>
+            <p>MSAI 631 - Machine Learning Engineering</p>
+        </div>
+        
+        <div class="content">
+            <div class="status">
+                <strong>✓ System Status:</strong> Flask application is running successfully!
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>Data Science Ready</h3>
+                    <p>Integrated with NumPy, Pandas, Matplotlib, and Scikit-learn for comprehensive data analysis and machine learning workflows.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>Flask Framework</h3>
+                    <p>Built with Flask web framework, providing a lightweight and flexible foundation for web applications and APIs.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>Responsive Design</h3>
+                    <p>Modern, mobile-friendly interface that adapts to different screen sizes and devices.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>Development Ready</h3>
+                    <p>Configured environment with proper logging, error handling, and development tools for efficient workflow.</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 3rem 0;">
+                <h2>Environment Information</h2>
+                <p><strong>Python Environment:</strong> Jupyter Notebook with Flask Integration</p>
+                <p><strong>Course:</strong> MSAI 631 - Machine Learning Engineering</p>
+                <p><strong>Status:</strong> <span style="color: #28a745; font-weight: bold;">✓ Ready for Development</span></p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 MSAI 631 Project | Flask Application</p>
+        </div>
+    </div>
+</body>
+</html>
