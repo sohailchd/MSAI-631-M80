@@ -1,0 +1,10 @@
+# Microsoft Bot Framework Requirements
+# MSAI-631 Project - Simple Traditional Chatbot
+
+# Core Bot Framework packages
+botbuilder-core>=4.14.0
+botbuilder-schema>=4.14.0
+
+# Web framework for hosting the bot
+aiohttp>=3.8.0
+aiohttp-cors>=0.7.0
