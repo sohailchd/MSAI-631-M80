@@ -1,5 +1,5 @@
 """
-Simple Movie Recommendation System
+Movie Recommendation System
 A basic content-based recommendation system using Python
 """
 

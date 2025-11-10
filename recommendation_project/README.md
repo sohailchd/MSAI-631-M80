@@ -1,4 +1,4 @@
-# Simple Movie Recommendation System
+# Movie Recommendation System
 
 A command-line movie recommender using content-based filtering.
 
