@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Learning Dashboard - AI-Powered</title>
+    <style>
+        /* Base styles and CSS variables for theming */
+        :root {
+            --bg-light: #f5f5f5;
+            --bg-dark: #1a1a1a;
+            --card-light: #ffffff;
+            --card-dark: #2a2a2a;
+            --text-light: #1a1a1a;
+            --text-dark: #ffffff;
+            --primary: #2563eb;
+            --primary-dark: #4a9eff;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        body.light-theme {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        body.dark-theme {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        body.reduced-motion * {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        /* Font size variations for accessibility */
+        body.font-small { font-size: 14px; }
+        body.font-medium { font-size: 16px; }
+        body.font-large { font-size: 20px; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Button styles */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        body.dark-theme .btn {
+            background-color: var(--primary-dark);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Recommendation banner */
+        .recommendation-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .recommendation-banner h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recommendation-item {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-left: 3px solid rgba(255,255,255,0.5);
+            padding-left: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        /* Settings panel */
+        .settings-panel {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .settings-panel.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-panel h3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .setting-group select,
+        .setting-group input {
+            width: 100%;
+            max-width: 300px;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .setting-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        body.light-theme .stat-card {
+            background-color: var(--card-light);
+        }
+
+        body.dark-theme .stat-card {
+            background-color: var(--card-dark);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.2);
+        }
+
+        .stat-card-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Course list */
+        .courses-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .course-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        body.light-theme .course-card {
+            background-color: var(--card-light);
+        }
+
+        body.dark-theme .course-card {
+            background-color: var(--card-dark);
+        }
+
+        .course-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        .course-card.recommended {
+            border-left: 4px solid var(--primary);
+        }
+
+        body.dark-theme .course-card.recommended {
+            border-left-color: var(--primary-dark);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .course-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            background: rgba(128,128,128,0.2);
+        }
+
+        .tag.recommended-tag {
+            background: var(--success);
+            color: white;
+            font-weight: bold;
+        }
+
+        .course-progress-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        body.dark-theme .course-progress-value {
+            color: var(--primary-dark);
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(128,128,128,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.5s ease;
+        }
+
+        body.dark-theme .progress-bar-fill {
+            background: var(--primary-dark);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 3rem;
+            padding: 1rem;
+            text-align: center;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        .footer-stats {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="light-theme font-medium">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1 id="greeting">Good Morning, Basar Chowdhury!</h1>
+                <p class="header-subtitle">AI-Powered Adaptive Learning Dashboard</p>
+            </div>
+            <div class="header-controls">
+                <button class="btn btn-icon" id="themeToggle" title="Toggle Theme">🌙</button>
+                <button class="btn btn-icon" id="settingsToggle" title="Settings">⚙️</button>
+            </div>
+        </div>
+
+        <!-- AI Recommendations Banner -->
+        <div class="recommendation-banner" id="recommendationBanner" style="display: none;">
+            <h3>📊 AI Recommendations</h3>
+            <div id="recommendationList"></div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settingsPanel">
+            <h3>Adaptive UI Controls</h3>
+            
+            <div class="setting-group">
+                <label for="fontSize">Font Size (Accessibility)</label>
+                <select id="fontSize">
+                    <option value="small">Small</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="large">Large</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="reducedMotion">
+                    Reduce Motion (Accessibility)
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label for="learningStyle">Learning Style Preference</label>
+                <select id="learningStyle">
+                    <option value="visual">Visual</option>
+                    <option value="reading">Reading/Writing</option>
+                    <option value="kinesthetic">Hands-on</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label for="activityLevel">Experience Level</label>
+                <select id="activityLevel">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate" selected>Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card" onclick="trackInteraction('stat_courses')">
+                <div class="stat-card-content">
+                    <div class="stat-icon">📚</div>
+                    <div>
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Active Courses</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card" onclick="trackInteraction('stat_progress')">
+                <div class="stat-card-content">
+                    <div class="stat-icon">📈</div>
+                    <div>
+                        <div class="stat-value">52%</div>
+                        <div class="stat-label">Overall Progress</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card" onclick="trackInteraction('stat_achievements')">
+                <div class="stat-card-content">
+                    <div class="stat-icon">🏆</div>
+                    <div>
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Achievements</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Courses Section -->
+        <div class="courses-section">
+            <h2>Your Courses <span id="sortingIndicator"></span></h2>
+            <div id="coursesList"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>This UI adapts to your behavior, preferences, and accessibility needs using AI-driven personalization</p>
+            <div class="footer-stats">
+                Interactions: <span id="interactionCount">0</span> | 
+                Theme: <span id="currentTheme">light</span> | 
+                Learning Style: <span id="currentLearningStyle">visual</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Adaptive Learning Dashboard - JavaScript Logic
+         * Author: Basar Sohail Chowdhury
+         * ITS-836 - Data Science & Big Data Analytics
+         * 
+         * This script implements AI-driven adaptive UI behavior including:
+         * - User behavior tracking
+         * - Dynamic theme adaptation
+         * - Personalized recommendations
+         * - Content sorting based on preferences
+         */
+
+        // Global state
+        let userProfile = {
+            name: 'Basar Chowdhury',
+            learningStyle: 'visual',
+            activityLevel: 'intermediate',
+            fontSize: 'medium',
+            reducedMotion: false,
+            preferredTimeOfDay: 'morning',
+            theme: 'light'
+        };
+
+        let interactionCount = 0;
+        let courses = [
+            { id: 1, title: 'Data Science Fundamentals', progress: 75, difficulty: 'beginner', format: 'video', recommended: false },
+            { id: 2, title: 'Machine Learning Advanced', progress: 45, difficulty: 'advanced', format: 'interactive', recommended: false },
+            { id: 3, title: 'Python Programming', progress: 60, difficulty: 'intermediate', format: 'text', recommended: false },
+            { id: 4, title: 'Deep Learning with PyTorch', progress: 30, difficulty: 'advanced', format: 'video', recommended: false }
+        ];
+
+        // Initialize the application
+        function init() {
+            adaptThemeToTimeOfDay();
+            loadUserPreferences();
+            setupEventListeners();
+            updateGreeting();
+            generateRecommendations();
+            renderCourses();
+            updateFooterStats();
+        }
+
+        // Adapt theme based on time of day (AI-driven contextual awareness)
+        function adaptThemeToTimeOfDay() {
+            const hour = new Date().getHours();
+            
+            if (hour >= 18 || hour < 6) {
+                setTheme('dark');
+                userProfile.preferredTimeOfDay = 'evening';
+            } else if (hour >= 12) {
+                setTheme('light');
+                userProfile.preferredTimeOfDay = 'afternoon';
+            } else {
+                setTheme('light');
+                userProfile.preferredTimeOfDay = 'morning';
+            }
+        }
+
+        // Update greeting based on time of day
+        function updateGreeting() {
+            const greetingEl = document.getElementById('greeting');
+            const emoji = userProfile.preferredTimeOfDay === 'morning' ? '🌅' : 
+                         userProfile.preferredTimeOfDay === 'afternoon' ? '☀️' : '🌙';
+            const timeText = userProfile.preferredTimeOfDay === 'morning' ? 'Good Morning' : 
+                           userProfile.preferredTimeOfDay === 'afternoon' ? 'Good Afternoon' : 'Good Evening';
+            
+            greetingEl.textContent = `${emoji} ${timeText}, ${userProfile.name}!`;
+        }
+
+        // Track user interactions for adaptive learning
+        function trackInteraction(action) {
+            interactionCount++;
+            console.log(`Adaptive AI: User performed ${action} (total: ${interactionCount})`);
+            
+            // Trigger adaptive behaviors based on interaction count
+            if (interactionCount === 3) {
+                generateRecommendations();
+            }
+            
+            if (interactionCount === 5) {
+                generateRecommendations();
+            }
+            
+            updateFooterStats();
+        }
+
+        // AI-driven recommendation engine
+        function generateRecommendations() {
+            const recommendations = [];
+            
+            // Engagement-based recommendation
+            if (interactionCount > 5) {
+                recommendations.push({
+                    type: 'engagement',
+                    message: 'You seem highly engaged! Consider the Advanced Data Science course.',
+                    priority: 'high'
+                });
+                
+                // Mark advanced courses as recommended
+                courses.forEach(course => {
+                    if (course.difficulty === 'advanced') {
+                        course.recommended = true;
+                    }
+                });
+            }
+
+            // Learning style recommendation
+            if (userProfile.learningStyle === 'visual') {
+                recommendations.push({
+                    type: 'content',
+                    message: 'Visual learner detected: Video tutorials available for all modules.',
+                    priority: 'medium'
+                });
+            }
+
+            // Time-based wellness recommendation
+            if (userProfile.theme === 'dark' && userProfile.preferredTimeOfDay === 'evening') {
+                recommendations.push({
+                    type: 'wellbeing',
+                    message: 'Evening study session detected. Consider taking breaks every 25 minutes.',
+                    priority: 'low'
+                });
+            }
+
+            // Activity level recommendation
+            if (userProfile.activityLevel === 'intermediate') {
+                courses.forEach(course => {
+                    if (course.difficulty === 'intermediate') {
+                        course.recommended = true;
+                    }
+                });
+            }
+
+            displayRecommendations(recommendations);
+            renderCourses(); // Re-render with updated recommendations
+        }
+
+        // Display recommendations in banner
+        function displayRecommendations(recommendations) {
+            const banner = document.getElementById('recommendationBanner');
+            const list = document.getElementById('recommendationList');
+            
+            if (recommendations.length === 0) {
+                banner.style.display = 'none';
+                return;
+            }
+
+            banner.style.display = 'block';
+            list.innerHTML = recommendations.map(rec => {
+                const borderColor = rec.priority === 'high' ? '#ff6b6b' : 
+                                  rec.priority === 'medium' ? '#ffd93d' : '#6bcf7f';
+                return `<div class="recommendation-item" style="border-left-color: ${borderColor}">
+                    <strong>${rec.type.toUpperCase()}:</strong> ${rec.message}
+                </div>`;
+            }).join('');
+        }
+
+        // Render courses with adaptive sorting
+        function renderCourses() {
+            const coursesList = document.getElementById('coursesList');
+            const sortIndicator = document.getElementById('sortingIndicator');
+            
+            // Adaptive sorting based on recommendations and progress
+            const sortedCourses = [...courses].sort((a, b) => {
+                if (a.recommended && !b.recommended) return -1;
+                if (!a.recommended && b.recommended) return 1;
+                return b.progress - a.progress;
+            });
+
+            if (courses.some(c => c.recommended)) {
+                sortIndicator.textContent = '(Sorted by AI Recommendations)';
+            }
+
+            coursesList.innerHTML = sortedCourses.map(course => `
+                <div class="course-card ${course.recommended ? 'recommended' : ''}" 
+                     onclick="trackInteraction('course_click_${course.id}')">
+                    <div class="course-header">
+                        <div>
+                            <div class="course-title">${course.title}</div>
+                            <div class="course-tags">
+                                <span class="tag">${course.difficulty}</span>
+                                <span class="tag">${course.format}</span>
+                                ${course.recommended ? '<span class="tag recommended-tag">AI Recommended</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="course-progress-value">${course.progress}%</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: ${course.progress}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Theme management
+        function setTheme(theme) {
+            document.body.className = document.body.className.replace(/\b(light|dark)-theme\b/g, '');
+            document.body.classList.add(`${theme}-theme`);
+            
+            // Preserve other classes
+            if (userProfile.reducedMotion) {
+                document.body.classList.add('reduced-motion');
+            }
+            document.body.classList.add(`font-${userProfile.fontSize}`);
+            
+            userProfile.theme = theme;
+            
+            // Update theme toggle button
+            const themeBtn = document.getElementById('themeToggle');
+            themeBtn.textContent = theme === 'light' ? '🌙' : '☀️';
+            
+            updateFooterStats();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                const newTheme = userProfile.theme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+                trackInteraction('theme_toggle');
+            });
+
+            // Settings toggle
+            document.getElementById('settingsToggle').addEventListener('click', () => {
+                const panel = document.getElementById('settingsPanel');
+                panel.classList.toggle('active');
+                trackInteraction('settings_toggle');
+            });
+
+            // Font size selector
+            document.getElementById('fontSize').addEventListener('change', (e) => {
+                userProfile.fontSize = e.target.value;
+                document.body.className = document.body.className.replace(/\bfont-(small|medium|large)\b/g, '');
+                document.body.classList.add(`font-${userProfile.fontSize}`);
+                saveUserPreferences();
+                trackInteraction('font_size_change');
+            });
+
+            // Reduced motion toggle
+            document.getElementById('reducedMotion').addEventListener('change', (e) => {
+                userProfile.reducedMotion = e.target.checked;
+                if (userProfile.reducedMotion) {
+                    document.body.classList.add('reduced-motion');
+                } else {
+                    document.body.classList.remove('reduced-motion');
+                }
+                saveUserPreferences();
+                trackInteraction('reduced_motion_toggle');
+            });
+
+            // Learning style selector
+            document.getElementById('learningStyle').addEventListener('change', (e) => {
+                userProfile.learningStyle = e.target.value;
+                saveUserPreferences();
+                generateRecommendations();
+                updateFooterStats();
+                trackInteraction('learning_style_change');
+            });
+
+            // Activity level selector
+            document.getElementById('activityLevel').addEventListener('change', (e) => {
+                userProfile.activityLevel = e.target.value;
+                saveUserPreferences();
+                generateRecommendations();
+                trackInteraction('activity_level_change');
+            });
+        }
+
+        // Local storage management
+        function saveUserPreferences() {
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+        }
+
+        function loadUserPreferences() {
+            const saved = localStorage.getItem('userProfile');
+            if (saved) {
+                const savedProfile = JSON.parse(saved);
+                userProfile = { ...userProfile, ...savedProfile };
+                
+                // Apply loaded preferences
+                document.getElementById('fontSize').value = userProfile.fontSize;
+                document.getElementById('reducedMotion').checked = userProfile.reducedMotion;
+                document.getElementById('learningStyle').value = userProfile.learningStyle;
+                document.getElementById('activityLevel').value = userProfile.activityLevel;
+                
+                // Apply to UI
+                document.body.classList.add(`font-${userProfile.fontSize}`);
+                if (userProfile.reducedMotion) {
+                    document.body.classList.add('reduced-motion');
+                }
+            }
+        }
+
+        // Update footer statistics
+        function updateFooterStats() {
+            document.getElementById('interactionCount').textContent = interactionCount;
+            document.getElementById('currentTheme').textContent = userProfile.theme;
+            document.getElementById('currentLearningStyle').textContent = userProfile.learningStyle;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
